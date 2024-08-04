@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
 import { DashboardItemComponent } from '../dashboard-item/dashboard-item.component';
 
 @Component({
@@ -8,16 +8,17 @@ import { DashboardItemComponent } from '../dashboard-item/dashboard-item.compone
   templateUrl: './server-status.component.html',
   styleUrl: './server-status.component.css'
 })
-export class ServerStatusComponent {
+export class ServerStatusComponent implements OnInit {
   currentStatus: 'online' | 'offline' | 'unknown' = 'online';
   image = {
     src: 'status.png',
     alt: 'A signal symbol'
   };
   title = 'Server status';
+  destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
-    setInterval(() => {
+    const interval = setInterval(() => {
       const random = Math.random();
       if (random < .5) {
         this.currentStatus = 'online';
@@ -27,5 +28,9 @@ export class ServerStatusComponent {
         this.currentStatus = 'unknown';
       }
     }, 5000);
+
+    this.destroyRef.onDestroy(() => {
+      clearInterval(interval);
+    });
   }
 }
