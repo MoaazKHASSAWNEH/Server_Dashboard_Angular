@@ -3,6 +3,15 @@
     [title]="title"
 >
     <div id="status">
-        <app-new-support-ticket  />
+        <app-new-support-ticket (add)="onAdd($event)" />
+    </div>
+    <div>
+        <ul>
+            @for (ticket of tickets ; track ticket.id) {
+                <li><app-support-ticket [data]="ticket" /></li>
+            } @empty {
+                <p>No support tikets available.</p>
+            }
+        </ul>
     </div>
 </app-dashboard-item>
