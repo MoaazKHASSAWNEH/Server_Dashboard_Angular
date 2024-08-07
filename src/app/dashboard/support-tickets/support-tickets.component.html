@@ -2,13 +2,13 @@
     [image]="image"
     [title]="title"
 >
-    <div id="status">
+    <div id="">
         <app-new-support-ticket (add)="onAdd($event)" />
     </div>
-    <div>
+    <div id="tickets">
         <ul>
             @for (ticket of tickets ; track ticket.id) {
-                <li><app-support-ticket [data]="ticket" /></li>
+                <li><app-support-ticket (close)="onCloseTicket(ticket.id)" [data]="ticket" /></li>
             } @empty {
                 <p>No support tikets available.</p>
             }
